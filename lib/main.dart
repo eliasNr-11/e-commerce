@@ -1,5 +1,6 @@
 import 'package:e_commerce/utils/routes/routes.dart';
 import 'package:e_commerce/utils/theme/theme_data.dart';
+import 'package:e_commerce/viewmodels/auth_viewmodel.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,7 +21,9 @@ class MainApp extends StatelessWidget {
       designSize: const Size(402, 874),
       minTextAdapt: false,
       builder: (context, child) => MultiProvider(
-        providers: [],
+        providers: [
+          ChangeNotifierProvider(create: (context) => AuthViewModel())
+        ],
         child: MaterialApp.router(
           title: 'E-Commerce App',
           themeMode: ThemeMode.light,
