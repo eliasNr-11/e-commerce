@@ -18,7 +18,7 @@ class ProfileScreen extends StatelessWidget {
     final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
 
     return Scaffold(
-      appBar: const CustomAppBar(title: 'PROFILE', back: true, bottom: false),
+      appBar: const CustomAppBar(title: 'PROFILE', back: false, bottom: false),
       body: profileViewModel.isLoading
           ? const Center(child: CircularProgressIndicator())
           : Padding(
