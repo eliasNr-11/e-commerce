@@ -1,5 +1,9 @@
 import 'package:e_commerce/viewmodels/cart_viewmodel.dart';
+import 'package:e_commerce/viewmodels/home_viewmodel.dart';
+import 'package:e_commerce/views/widgets/custom_appbar.dart';
+import 'package:e_commerce/views/widgets/main_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -12,7 +16,7 @@ class PlaceOrderScreen extends StatefulWidget {
 
 class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
   String selectedPaymentMethod = "credit_card";
-  String deliveryAddress = "123 Main St, City, Country";  // Static address, can be dynamic if needed.
+  String deliveryAddress = "Addis Ababa, Ethiopia";
 
   @override
   Widget build(BuildContext context) {
@@ -20,23 +24,56 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
     final totalPrice = cartViewModel.calculateTotalPrice();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Place Order'),
-      ),
+      appBar:
+          const CustomAppBar(title: 'PLACE ORDER', back: true, bottom: false),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(20.r),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Payment Method Selection
-            const Text(
-              'Select Payment Method:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Text(
+              'Select Payment Method',
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
             ),
+            SizedBox(height: 20.h),
             ListTile(
-              title: const Text("Credit Card"),
-              leading: Radio<String>(
+              tileColor: selectedPaymentMethod == "credit_card"
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.secondary,
+              leading: Icon(
+                Icons.credit_card,
+                size: 32.sp,
+                color: selectedPaymentMethod == "credit_card"
+                    ? Theme.of(context).colorScheme.onPrimary
+                    : Theme.of(context).colorScheme.onSecondary,
+              ),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.r)),
+              title: Text(
+                "Credit Card",
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
+                  color: selectedPaymentMethod == "credit_card"
+                      ? Theme.of(context).colorScheme.onPrimary
+                      : Theme.of(context).colorScheme.onSecondary,
+                ),
+              ),
+              subtitle: Text(
+                '1234 **** **** **12',
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w300,
+                  color: selectedPaymentMethod == "credit_card"
+                      ? Theme.of(context).colorScheme.onPrimary
+                      : Theme.of(context).colorScheme.onSecondary,
+                ),
+              ),
+              trailing: Radio<String>(
                 value: "credit_card",
+                activeColor: selectedPaymentMethod == "credit_card"
+                    ? Theme.of(context).colorScheme.onPrimary
+                    : Theme.of(context).colorScheme.onSecondary,
                 groupValue: selectedPaymentMethod,
                 onChanged: (String? value) {
                   setState(() {
@@ -45,10 +82,45 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
                 },
               ),
             ),
+            SizedBox(height: 20.h),
             ListTile(
-              title: const Text("Debit Card"),
-              leading: Radio<String>(
+              tileColor: selectedPaymentMethod == "debit_card"
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.secondary,
+              leading: Icon(
+                Icons.paypal,
+                size: 32.sp,
+                color: selectedPaymentMethod == "debit_card"
+                    ? Theme.of(context).colorScheme.onPrimary
+                    : Theme.of(context).colorScheme.onSecondary,
+              ),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.r)),
+              title: Text(
+                "Debit Card",
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
+                  color: selectedPaymentMethod == "debit_card"
+                      ? Theme.of(context).colorScheme.onPrimary
+                      : Theme.of(context).colorScheme.onSecondary,
+                ),
+              ),
+              subtitle: Text(
+                '9876 **** **** **98',
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w300,
+                  color: selectedPaymentMethod == "debit_card"
+                      ? Theme.of(context).colorScheme.onPrimary
+                      : Theme.of(context).colorScheme.onSecondary,
+                ),
+              ),
+              trailing: Radio<String>(
                 value: "debit_card",
+                activeColor: selectedPaymentMethod == "debit_card"
+                    ? Theme.of(context).colorScheme.onPrimary
+                    : Theme.of(context).colorScheme.onSecondary,
                 groupValue: selectedPaymentMethod,
                 onChanged: (String? value) {
                   setState(() {
@@ -57,46 +129,93 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
                 },
               ),
             ),
-            const SizedBox(height: 20),
-            // Delivery Address
-            const Text(
-              'Delivery Address:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            SizedBox(height: 40.h),
+            Text(
+              'Delivery adress',
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
+            ),
+            SizedBox(height: 20.h),
+            Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(6.r),
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 0.5, color: Colors.grey),
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  child: Icon(
+                    Icons.border_all_outlined,
+                    size: 16.sp,
+                  ),
+                ),
+                SizedBox(width: 20.w),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      deliveryAddress,
+                      style: TextStyle(
+                          fontSize: 16.sp, fontWeight: FontWeight.w600),
+                    ),
+                    Text(
+                      '123 Street',
+                      style: TextStyle(
+                          fontSize: 12.sp, fontWeight: FontWeight.w300),
+                    ),
+                  ],
+                ),
+                SizedBox(width: 20.w),
+                const Spacer(),
+                Icon(Icons.edit_outlined)
+              ],
+            ),
+            SizedBox(height: 40.w),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Estimated delivery time:',
+                  style:
+                      TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w300),
+                ),
+                Text(
+                  '1-2 days',
+                  style:
+                      TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
+                ),
+              ],
+            ),
+            SizedBox(height: 20.h),
+            const Spacer(),
+            Text(
+              'Total Price',
+              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w300),
             ),
             Text(
-              deliveryAddress,
-              style: const TextStyle(fontSize: 16),
+              "\$${totalPrice.toStringAsFixed(2)}",
+              style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w600),
             ),
-            const SizedBox(height: 20),
-            // Order Summary
-            const Text(
-              'Order Summary:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              "Total Price: \$${totalPrice.toStringAsFixed(2)}",
-              style: const TextStyle(fontSize: 16, color: Colors.green),
-            ),
-            const SizedBox(height: 20),
-            // Place Order Button
-            Center(
-              child: ElevatedButton(
-                onPressed: () async {
+            SizedBox(height: 20.h),
+            SafeArea(
+              child: MainButton(
+                name: cartViewModel.isLoading ? '...' : 'Place Order',
+                onPressed: cartViewModel.isLoading ? null : () async {
                   final goRouter = GoRouter.of(context);
+                  final homeVM =
+                      Provider.of<HomeViewModel>(context, listen: false);
 
-                  // Call the place order method from ViewModel
                   await cartViewModel.placeOrder(
                     cartViewModel.selectedItems,
                     selectedPaymentMethod,
                     deliveryAddress,
                   );
 
-                  // After placing the order, navigate back to the home page
+                  homeVM.updateSelectedTab(0);
                   goRouter.go('/home');
                 },
-                child: const Text("Place Order"),
               ),
             ),
+            SizedBox(height: 20.h),
           ],
         ),
       ),

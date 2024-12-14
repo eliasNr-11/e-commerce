@@ -6,6 +6,7 @@ import 'package:e_commerce/views/home_screen.dart';
 import 'package:e_commerce/views/list_by_category_screen.dart';
 import 'package:e_commerce/views/login_screen.dart';
 import 'package:e_commerce/views/main_navigation.dart';
+import 'package:e_commerce/views/onboarding_screen.dart';
 import 'package:e_commerce/views/place_order_screen.dart';
 import 'package:e_commerce/views/profile_screen.dart';
 import 'package:e_commerce/views/registration_screen.dart';
@@ -91,6 +92,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/place-order',
       builder: (BuildContext context, GoRouterState state) => const PlaceOrderScreen(),
+    ),
+    GoRoute(
+      path: '/onboarding',
+      builder: (BuildContext context, GoRouterState state) => const OnboardingScreen(),
     ),
   ],
 );
