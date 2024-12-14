@@ -29,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
       if (authViewModel.isLoggedIn) {
         goRouter.go('/home');
       } else {
-        goRouter.go('/login');
+        goRouter.go('/onboarding');
       }
     });
   }

@@ -51,7 +51,7 @@ class LoginScreen extends StatelessWidget {
                   style: const TextStyle(color: Colors.red)),
             TextButton(
               onPressed: () {
-                context.push('/register');
+                context.go('/register');
               },
               child: const Text('Register'),
             ),
