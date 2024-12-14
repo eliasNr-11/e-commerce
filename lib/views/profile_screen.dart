@@ -1,4 +1,5 @@
 import 'package:e_commerce/viewmodels/auth_viewmodel.dart';
+import 'package:e_commerce/viewmodels/home_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -42,8 +43,10 @@ class ProfileScreen extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () async {
                       final goRouter = GoRouter.of(context);
+                      final homeVM = Provider.of<HomeViewModel>(context, listen: false);
                       
                       await authViewModel.logout();
+                      homeVM.updateSelectedTab(0);
                       goRouter.go('/login');
                     },
                     child: const Text("Logout"),

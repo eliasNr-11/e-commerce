@@ -38,7 +38,7 @@ class DetailScreen extends StatelessWidget {
               // Product Price
               Text(
                 product.discount != null
-                    ? "Discounted Price: \$${product.discount!.toStringAsFixed(2)}"
+                    ? "Discounted Price: \$${(product.price! - product.discount!).toStringAsFixed(2)}"
                     : "Price: \$${product.price!.toStringAsFixed(2)}",
                 style: const TextStyle(fontSize: 20, color: Colors.green),
               ),
@@ -76,7 +76,7 @@ class DetailScreen extends StatelessWidget {
 
   void _showAddToCartModal(BuildContext context, Product product) {
     int quantity = 1;
-    final price = product.discount ?? product.price!;
+    final price = product.discount == null ? product.price! : product.price! - product.discount!;
 
     showModalBottomSheet(
       context: context,

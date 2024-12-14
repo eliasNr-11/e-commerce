@@ -1,4 +1,5 @@
 import 'package:e_commerce/viewmodels/home_viewmodel.dart';
+import 'package:e_commerce/viewmodels/profile_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +26,9 @@ class MainNavigation extends StatelessWidget {
         selectedIndex: homeViewModel.selectedTab,
         onDestinationSelected: (index) {
           homeViewModel.updateSelectedTab(index);
+          if (index == 3) {
+            context.read<ProfileViewModel>().fetchUserData();
+          }
           context.go(routes[index]);
         },
         destinations: const <Widget>[

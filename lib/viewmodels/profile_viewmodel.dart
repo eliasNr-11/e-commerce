@@ -24,11 +24,11 @@ class ProfileViewModel extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
+    _orders = [];
+
     try {
-      // Fetch user data
       _user = _auth.currentUser;
 
-      // Fetch order history for the user
       if (_user != null) {
         final orderSnapshot = await _firestore
             .collection('orders')
@@ -41,11 +41,14 @@ class ProfileViewModel extends ChangeNotifier {
             .toList();
       }
     } catch (e) {
-      // Handle errors (you can show error messages if needed)
       print(e);
     }
 
     _isLoading = false;
     notifyListeners();
+  }
+
+  Future<void> fetchUserData() async {
+    await _loadUserData();
   }
 }
