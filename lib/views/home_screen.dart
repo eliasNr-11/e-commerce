@@ -13,7 +13,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: 'ECOMMERCE', back: false),
+      appBar: const CustomAppBar(title: 'ECOMMERCE', back: false, bottom: true,),
       body: Consumer<HomeViewModel>(builder: (context, viewModel, _) {
         return viewModel.isLoading
             ? Center(

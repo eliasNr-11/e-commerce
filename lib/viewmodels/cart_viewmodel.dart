@@ -10,6 +10,12 @@ class CartViewModel extends ChangeNotifier {
   List<CartItem> get cartItems => _cartBox.values.toList();
   List<CartItem> selectedItems = [];
 
+  bool _isLoading = false;
+  String? _errorMessage;
+
+  bool get isLoading => _isLoading;
+  String? get errorMessage => _errorMessage;
+
   void addToCart(Product product, int quantity) {
     CartItem? existingItem;
     try {
@@ -78,6 +84,9 @@ class CartViewModel extends ChangeNotifier {
   Future<void> placeOrder(List<CartItem> selectedItems,
       String selectedPaymentMethod, String deliveryAddress) async {
     try {
+      _isLoading = true;
+      notifyListeners();
+
       final userId = FirebaseAuth.instance.currentUser?.uid;
 
       if (userId == null) {
@@ -106,10 +115,14 @@ class CartViewModel extends ChangeNotifier {
       await orderRef.set(order);
 
       removeSelectedItems();
+      _errorMessage = null;
 
       notifyListeners();
     } catch (e) {
-      rethrow;
+      _errorMessage = e.toString();
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
   }
 

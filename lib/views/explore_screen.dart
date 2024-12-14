@@ -25,7 +25,7 @@ class ExploreScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: const CustomAppBar(title: 'EXPLORE', back: false),
+      appBar: const CustomAppBar(title: 'EXPLORE', back: false, bottom: true,),
       body: ListView.separated(
         padding: EdgeInsets.all(20.r),
         itemCount: exploreViewModel.categories.length,

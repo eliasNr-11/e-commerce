@@ -1,5 +1,8 @@
 import 'package:e_commerce/viewmodels/cart_viewmodel.dart';
+import 'package:e_commerce/views/widgets/custom_appbar.dart';
+import 'package:e_commerce/views/widgets/main_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -11,14 +14,37 @@ class CartScreen extends StatelessWidget {
     final cartViewModel = context.watch<CartViewModel>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Your Cart'),
+      appBar: const CustomAppBar(
+        title: 'CART',
+        back: false,
+        bottom: false,
       ),
       body: cartViewModel.cartItems.isEmpty
-          ? const Center(
-              child: Text(
-                'Your cart is empty!',
-                style: TextStyle(fontSize: 18),
+          ? Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30.w),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.shopping_cart_outlined,
+                      size: 120.sp,
+                    ),
+                    SizedBox(height: 20.h),
+                    Text(
+                      'Your cart is empty!',
+                      style: TextStyle(
+                          fontSize: 20.sp, fontWeight: FontWeight.w500),
+                    ),
+                    SizedBox(height: 10.h),
+                    Text(
+                      'Items will show up here once you started adding items to your cart from product detail page.',
+                      style: TextStyle(
+                          fontSize: 14.sp, fontWeight: FontWeight.w300),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
               ),
             )
           : Column(
@@ -28,51 +54,105 @@ class CartScreen extends StatelessWidget {
                     itemCount: cartViewModel.cartItems.length,
                     itemBuilder: (context, index) {
                       final cartItem = cartViewModel.cartItems[index];
-                      return Card(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 5),
-                        child: ListTile(
-                          leading: Image.network(
-                            cartItem.imageUrl,
-                            width: 50,
-                            fit: BoxFit.cover,
-                          ),
-                          title: Text(cartItem.productName),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Price: \$${cartItem.price.toStringAsFixed(2)}',
+                      return Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 20.w, vertical: 20.h),
+                        child: Row(
+                          children: [
+                            Checkbox(
+                              value: cartViewModel.selectedItems
+                                  .contains(cartItem),
+                              onChanged: (value) {
+                                cartViewModel.toggleItemSelection(cartItem);
+                              },
+                            ),
+                            SizedBox(width: 10.w),
+                            Container(
+                              height: 72.r,
+                              width: 72.r,
+                              clipBehavior: Clip.hardEdge,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.r),
                               ),
-                              Text(
-                                'Quantity: ${cartItem.quantity}',
+                              child: Image.network(
+                                cartItem.imageUrl,
+                                fit: BoxFit.cover,
                               ),
-                            ],
-                          ),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Checkbox(
-                                value: cartViewModel.selectedItems
-                                    .contains(cartItem),
-                                onChanged: (value) {
-                                  cartViewModel.toggleItemSelection(cartItem);
-                                },
+                            ),
+                            SizedBox(width: 10.w),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Text(cartItem.productName, style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600,),),
+                                  SizedBox(height: 10.h),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        '\$${cartItem.price.toStringAsFixed(2)}', style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w300,),
+                                      ),
+                                      Row(
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              cartViewModel
+                                                  .decrementItemQuantity(
+                                                      cartItem);
+                                            },
+                                            child: Container(
+                                              padding: EdgeInsets.all(0.r),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          4.r),
+                                                  border: Border.all(width: 2)),
+                                              child: Icon(
+                                                Icons.remove,
+                                                size: 16.sp,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 32.w,
+                                            child: Text(
+                                              cartItem.quantity.toString(),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              cartViewModel
+                                                  .incrementItemQuantity(
+                                                      cartItem);
+                                            },
+                                            child: Container(
+                                              padding: EdgeInsets.all(0.r),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          4.r),
+                                                  border: Border.all(width: 2),
+                                                  color: Theme.of(context)
+                                                      .primaryColor),
+                                              child: Icon(
+                                                Icons.add,
+                                                size: 16.sp,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onPrimary,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  )
+                                ],
                               ),
-                              IconButton(
-                                onPressed: () =>
-                                    cartViewModel.decrementItemQuantity(
-                                        cartItem),
-                                icon: const Icon(Icons.remove),
-                              ),
-                              IconButton(
-                                onPressed: () =>
-                                    cartViewModel.incrementItemQuantity(
-                                        cartItem),
-                                icon: const Icon(Icons.add),
-                              ),
-                            ],
-                          ),
+                            )
+                          ],
                         ),
                       );
                     },
@@ -85,34 +165,42 @@ class CartScreen extends StatelessWidget {
                     children: [
                       Text(
                         'Total: \$${cartViewModel.calculateTotalPrice().toStringAsFixed(2)}',
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w600,
                         ),
-                        textAlign: TextAlign.center,
+                        textAlign: TextAlign.start,
                       ),
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: cartViewModel.selectedItems.isEmpty
-                            ? null
-                            : () {
-                                // Navigate to order page
-                                context.push('/place-order');
-                              },
-                        child: const Text('Place Order'),
-                      ),
-                      const SizedBox(height: 8),
-                      ElevatedButton(
+                      SizedBox(height: 10.h),
+                      TextButton(
                         onPressed: cartViewModel.selectedItems.isEmpty
                             ? null
                             : () {
                                 cartViewModel.removeSelectedItems();
                               },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
+                        child: Text(
+                          'Remove Selected',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.normal,
+                            color: cartViewModel.selectedItems.isEmpty
+                                ? Colors.grey
+                                : Theme.of(context).colorScheme.error,
+                            decoration: TextDecoration.underline,
+                            decorationColor: cartViewModel.selectedItems.isEmpty
+                                ? Colors.grey
+                                : Theme.of(context).colorScheme.error,
+                          ),
                         ),
-                        child: const Text('Remove Selected'),
                       ),
+                      MainButton(
+                        name: 'Place Order',
+                        onPressed: cartViewModel.selectedItems.isEmpty
+                            ? null
+                            : () {
+                                context.push('/place-order');
+                              },
+                      )
                     ],
                   ),
                 ),

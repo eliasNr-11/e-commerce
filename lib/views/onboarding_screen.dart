@@ -1,3 +1,4 @@
+import 'package:e_commerce/views/widgets/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -62,23 +63,11 @@ class OnboardingScreen extends StatelessWidget {
                             textAlign: TextAlign.center,
                           ),
                           SizedBox(height: 60.h),
-                          FilledButton(
+                          MainButton(
+                            name: 'Sign Up with Email',
                             onPressed: () {
                               context.go('/register');
                             },
-                            style: FilledButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.r),
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 16.h, horizontal: 16.w),
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              minimumSize: Size.zero,
-                            ),
-                            child: Text(
-                              'Sign Up with Email',
-                              style: TextStyle(fontSize: 16.sp),
-                            ),
                           ),
                           SizedBox(height: 20.h),
                         ],

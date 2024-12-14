@@ -24,7 +24,7 @@ class ListByCategoryPage extends StatelessWidget {
       create: (_) => CategoryItemsViewModel(context.read<ProductService>())
         ..fetchProducts(categoryId),
       child: Scaffold(
-        appBar: CustomAppBar(title: categoryName, back: true),
+        appBar: CustomAppBar(title: categoryName, back: true, bottom: true,),
         body: Consumer<CategoryItemsViewModel>(
           builder: (context, viewModel, _) {
             if (viewModel.isLoading) {

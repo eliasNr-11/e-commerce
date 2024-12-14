@@ -5,14 +5,15 @@ import 'package:go_router/go_router.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
     super.key,
-    required this.title, required this.back,
+    required this.title, required this.back, required this.bottom,
   });
 
   final String title;
   final bool back;
+  final bool bottom;
 
   @override
-  Size get preferredSize => Size.fromHeight(126.h);
+  Size get preferredSize => Size.fromHeight(bottom ? 126.h : 64.h);
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +62,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         SizedBox(width: 10.w),
       ],
-      bottom: PreferredSize(
+      bottom: bottom ? PreferredSize(
         preferredSize: Size.fromHeight(60.h),
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
@@ -90,7 +91,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
         ),
-      ),
+      ) : null,
     );
   }
 }
