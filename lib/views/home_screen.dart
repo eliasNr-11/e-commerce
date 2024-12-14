@@ -1,8 +1,10 @@
 import 'package:e_commerce/viewmodels/home_viewmodel.dart';
+import 'package:e_commerce/views/widgets/custom_appbar.dart';
 import 'package:e_commerce/views/widgets/home_product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -11,72 +13,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        scrolledUnderElevation: 0,
-        surfaceTintColor: Colors.transparent,
-        title: Text(
-          'ECOMMERCE',
-          style: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        actions: [
-          IconButton.filled(
-            onPressed: () {},
-            style: IconButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.secondary,
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              padding: EdgeInsets.all(14.r),
-              minimumSize: Size.zero,
-            ),
-            icon: Icon(
-              Icons.notifications_none,
-              size: 20.r,
-            ),
-          ),
-          SizedBox(width: 10.w),
-          Container(
-            clipBehavior: Clip.hardEdge,
-            height: 48.h,
-            decoration: const BoxDecoration(shape: BoxShape.circle),
-            child: Image.network(
-                'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fHBvcnRyYWl0fGVufDB8fDB8fHww'),
-          ),
-          SizedBox(width: 10.w),
-        ],
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(60.h),
-          child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-            height: 48.h,
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.secondary,
-              borderRadius: BorderRadius.circular(30.r),
-            ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.search,
-                    size: 24.sp,
-                  ),
-                  SizedBox(width: 10.w),
-                  Text(
-                    'Search Product',
-                    style: TextStyle(
-                        fontSize: 14.sp,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w300),
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
+      appBar: const CustomAppBar(title: 'ECOMMERCE', back: false),
       body: Consumer<HomeViewModel>(builder: (context, viewModel, _) {
         return viewModel.isLoading
             ? Center(
@@ -165,7 +102,11 @@ class HomeScreen extends StatelessWidget {
                         mainAxisSpacing: 20,
                         itemBuilder: (context, index) {
                           final product = viewModel.products[index];
-                          return HomeProduct(product: product);
+                          return HomeProduct(
+                            product: product,
+                            onPressed: () => context
+                                .push('/detail/${product.id}', extra: product),
+                          );
                         },
                       ),
                     ),
